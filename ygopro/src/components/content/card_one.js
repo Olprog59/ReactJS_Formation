@@ -1,4 +1,5 @@
 import React from "react";
+import '../../assets/css/card_one.css'
 
 const CardOne = (props) => {
 

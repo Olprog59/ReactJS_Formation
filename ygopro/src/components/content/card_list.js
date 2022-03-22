@@ -2,6 +2,7 @@ import React, {Fragment, useEffect, useState} from "react";
 import CardOne from "./card_one";
 import {getAllCards} from "../../services/card_list_service";
 import {toModel} from "../../models/card_model";
+import '../../assets/css/card_list.css';
 
 const CardList = () => {
 
