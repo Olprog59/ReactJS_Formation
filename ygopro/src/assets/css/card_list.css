@@ -24,4 +24,5 @@ div.info select {
     border: 1px solid rgba(255,255,255,0.3);
     background-color: rgba(255,255,255,0.4);
     color: white;
+    margin: 0 20px;
 }
