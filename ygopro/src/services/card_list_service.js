@@ -17,4 +17,10 @@ async function searchAllCards(input = '',
 	return await response.json();
 }
 
-export {getAllCards, searchAllCards};
+
+async function findById(id, language = 'fr') {
+	const response = await fetch(`https://db.ygoprodeck.com/api/v7/cardinfo.php?id=${id}&language=${language}`);
+	return await response.json();
+}
+
+export {getAllCards, searchAllCards, findById};

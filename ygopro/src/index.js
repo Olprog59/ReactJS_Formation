@@ -3,11 +3,22 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/app';
 import reportWebVitals from './reportWebVitals';
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route
+} from "react-router-dom";
+import CardDesc from "./components/content/card_desc";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Router>
+      <Routes>
+          <Route path="/">
+              <Route index element={<App />} />
+              <Route path=":idCard" element={<CardDesc />} />
+          </Route>
+      </Routes>
+  </Router>,
   document.getElementById('root')
 );
 
