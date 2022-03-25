@@ -2,10 +2,20 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
+const slugify = require('slugify');
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer();
 
 const app = express();
 
 app.use(cors({origin: '*'}))
+app.use(express.urlencoded({
+	extended: true
+}))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(upload.array());
 
 const db = new sqlite3.Database('blog.db');
 
@@ -84,6 +94,43 @@ app.get('/', (req, res) => {
 		console.log(err);
 		res.status(200).json(row);
 	});
+});
+
+app.get('/admin/getCatAndUser', (req, res)=>{
+	let obj = {};
+
+	db.all('SELECT * FROM categorie', (err, row) => {
+		if (err) {
+			res.status(500).json({err: err, status: 500})
+		}
+		obj.cat = row;
+
+		db.all('SELECT * FROM utilisateur', (e, users) => {
+			if (err) {
+				res.status(500).json({err: err, status: 500})
+			}
+
+			obj.user = users;
+			res.status(200).json(obj);
+		})
+	});
+});
+
+
+
+app.post('/admin/article', (req, res) => {
+	const form = req.body;
+	console.log(form);
+	if (form.titre && form.contenu){
+
+		const stmt = db.prepare("INSERT INTO article (titre, contenu, slug, date_creation, id_cat, id_user) VALUES (?,?,?,?,?,?)");
+		stmt.run(form.titre, form.contenu, slugify(form.titre), new Date(), form.cat, form.user);
+		stmt.finalize();
+
+		res.status(200).json({isSuccess: true});
+	}
+
+	res.status(501).json({isSuccess: false});
 });
 
 
